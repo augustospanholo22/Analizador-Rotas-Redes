@@ -61,11 +61,37 @@ int main(int argc, char* argv[]) {
             arestas_inseridas++;
     }
 
-    std::cout << "\nTudo Ok!\n";
+    std::cout << "\nGrafo de roteamento inicializado!\n";
 
-    std::cout << "Vertices unicos:" << g.size() << "\n";
+    std::cout << "Vertices unicos (IPs):" << g.size() << " | Arestas: " << arestas_inseridas << "\n";
 
-    std::cout << "Arestas: " << arestas_inseridas << "\n";
+    std::cout << "\n=======================================";
+
+
+    int opcao;
+    do{
+        std::cout << "\n1-Exibir grafo completo";
+        std::cout << "\n2-Encontrar Menor Caminho";
+        std::cout << "\n3-Calcular o Diâmetro do Grafo";
+        std::cout << "\n4-Identificar Roteadores Críticos";
+        std::cout << "\n0-Sair";
+
+        std::cout << "\nEscolha uma opção: ";
+        std::cin >> opcao;
+
+        switch (opcao) {
+            case 1:
+                g.draw();
+                break;
+            case 0:
+                std::cout << "Saindo...\n";
+                break;
+            default:
+                std::cout << "Opção inválida. Tente novamente.\n";
+        }
+    }while(opcao != 0);
+
+
 
     return 0;
 }
