@@ -75,14 +75,40 @@ int main(int argc, char* argv[]) {
         std::cout << "\n3-Calcular o Diâmetro do Grafo";
         std::cout << "\n4-Identificar Roteadores Críticos";
         std::cout << "\n0-Sair";
+        std::cout << "\n=======================================";
 
         std::cout << "\nEscolha uma opção: ";
         std::cin >> opcao;
 
         switch (opcao) {
-            case 1:
+            case 1: {
                 g.draw();
                 break;
+            }
+            case 2: { 
+                std::string origem, destino;
+                std::cout << "Digite o IP de Origem: ";
+                std::cin >> origem;
+                std::cout << "Digite o IP de Destino: ";
+                std::cin >> destino;
+                auto caminho = g.shortest_path(origem,destino);
+                std::cout << "\n";
+                if(caminho.empty()){
+                    std::cout << "Caminho nao encontrado\n";
+                    continue;
+                }
+
+                std::cout << "Caminho encontrado (" <<caminho.size()-1 << " saltos):\n";
+                
+                for(const auto p : caminho){
+                    std:: cout << p << " -> ";
+                }
+                std::cout << "\n";
+                break;
+            }
+
+
+
             case 0:
                 std::cout << "Saindo...\n";
                 break;
