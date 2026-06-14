@@ -104,6 +104,13 @@ int main(int argc, char* argv[]) {
                     std:: cout << p << " -> ";
                 }
                 std::cout << "\n";
+                g.draw_path(caminho);
+                break;
+                
+            }
+            case 3: {
+                std::cout << "Calculando o diâmetro do grafo...\n";
+                std::cout << "Diâmetro do grafo: " << g.diametro() << std::endl;
                 break;
             }
 

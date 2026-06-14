@@ -49,25 +49,6 @@ namespace graph
       return it == nodes.end() ? nullptr : &it->second;
     }
 
-    // INsere um aresta dirigida de 'from' para 'to'
-    bool insert_link(const std::string &from, const std::string &to){
-      auto pfrom = find(from);
-      if (!pfrom)
-          return false;
-
-      auto pto = find(to);
-      if (!pto)
-          return false;
-
-      auto it = std::find(pfrom->links.begin(),pfrom->links.end(),pto);
-
-      if (it != pfrom->links.end())
-          return false;
-
-      pfrom->links.push_back(pto);
-      return true;
-    }
-
     // Numero de arestas que chegam a um vertice
     size_t indegree(const std::string &s)
     {
@@ -276,6 +257,96 @@ namespace graph
       }
       return path;
     }
+
+
+
+
+    //Todas alteracoes para o trabalho
+
+
+    // INsere um aresta dirigida de 'from' para 'to'
+    bool insert_link(const std::string &from, const std::string &to){
+      auto pfrom = find(from);
+      if (!pfrom)
+          return false;
+
+      auto pto = find(to);
+      if (!pto)
+          return false;
+
+      auto it = std::find(pfrom->links.begin(),pfrom->links.end(),pto);
+
+      if (it != pfrom->links.end())
+          return false;
+
+      pfrom->links.push_back(pto);
+      return true;
+    }
+
+    int diametro(){
+      int diametro = 0;
+      for (auto& k : nodes){
+        for (auto& k2: nodes){
+          if(k.first == k2.first){
+            continue;
+          }
+          auto caminho = shortest_path(k.first,k2.first);
+          if(!caminho.empty()){
+            int distancia = caminho.size() - 1;
+            if(distancia > diametro){
+              diametro = distancia;
+            }
+          }
+        }
+      }
+      return diametro;
+    }
+
+
+    void export_path_dot(const std::string& filename, const std::vector<std::string>& caminho) {
+      std::ofstream dot(filename);
+      dot << "digraph{\n";
+
+      for (const auto& nd : nodes) {
+
+          bool no_caminho = std::find(caminho.begin(), caminho.end(), nd.first) != caminho.end();
+
+          dot << "\"" << nd.first << "\"";
+          if (no_caminho)
+              dot << " [style=filled, fillcolor=green]";
+
+          dot << ";\n";
+      }
+
+      for (const auto& nd : nodes) {
+
+          for (auto vizinho : nd.second.links) {
+
+              bool aresta_caminho = false;
+
+              for (int i = 0; i + 1 < caminho.size(); i++) {
+                  if (caminho[i] == nd.first && caminho[i + 1] == vizinho->value) {
+                      aresta_caminho = true;
+                      break;
+                  }
+              }
+              dot << "\"" << nd.first << "\" -> \"" << vizinho->value << "\"";
+              if (aresta_caminho)
+                  dot << " [color=red, penwidth=3]";
+
+              dot << ";\n";
+          }
+      }
+      dot << "}\n";
+    }
+
+    void draw_path(const std::vector<std::string>& caminho) {
+        export_path_dot("path.dot", caminho);
+        std::system("dot -Tx11 path.dot");
+    }
+
+
+
 
   }; /// fim da classe digraph
 
