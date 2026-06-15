@@ -50,20 +50,15 @@ namespace graph
     }
 
     // Numero de arestas que chegam a um vertice
-    size_t indegree(const std::string &s)
-    {
+    size_t indegree(const std::string &s) {
       auto p = find(s);
-      if (p == nullptr)
-      {
+      if (p == nullptr) {
         return 0;
       }
       size_t contador = 0;
-      for (auto nd : nodes)
-      {
-        for (auto v : nd.second.links)
-        {
-          if (s == v->value)
-          {
+      for (auto nd : nodes){
+        for (auto v : nd.second.links){
+          if (s == v->value){
             contador++;
           }
         }
@@ -343,6 +338,20 @@ namespace graph
     void draw_path(const std::vector<std::string>& caminho) {
         export_path_dot("path.dot", caminho);
         std::system("dot -Tx11 path.dot");
+    }
+
+    void top_indegree(){
+      std::vector<std::pair<std::string, int>> posicao;
+      for(const auto& k : nodes){
+        posicao.push_back({k.first, indegree(k.first)});
+      }
+      std::sort(posicao.begin(), posicao.end(), [](const auto& a, const auto& b){
+        return a.second > b.second;
+      });
+      
+      for(int i=0; i<5;i++){
+        std::cout << i+1 <<"°: " << posicao[i].first << " -> " << posicao[i].second << std::endl;
+      }
     }
 
 

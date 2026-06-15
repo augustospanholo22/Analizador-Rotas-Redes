@@ -82,7 +82,28 @@ int main(int argc, char* argv[]) {
 
         switch (opcao) {
             case 1: {
-                g.draw();
+                g.export2dot("graphED2.dot");
+                std::cout << "\nSelecione o formato de saída do Graphviz:";
+                std::cout << "\n1. Tela";
+                std::cout << "\n2. Imagem (PNG)";
+                std::cout << "\n3. Documento (PDF)";
+                std::cout << "\nopcao: ";
+                int opcao;
+                std::cin >> opcao;
+                switch(opcao){
+                    case 1:
+                        system("dot -Tx11 graphED2.dot");
+                        break;
+                    case 2: 
+                        system("dot -Tpng graphED2.dot -o grafo.png");
+                        break;
+                    case 3:
+                        system("dot -Tpdf graphED2.dot -o grafo.pdf");
+                        break;
+                    default:
+                        std::cout << "Opção inválida.\n";
+
+                }
                 break;
             }
             case 2: { 
@@ -103,19 +124,40 @@ int main(int argc, char* argv[]) {
                 for(const auto p : caminho){
                     std:: cout << p << " -> ";
                 }
-                std::cout << "\n";
-                g.draw_path(caminho);
+                g.export_path_dot("path.dot", caminho);
+                std::cout << "\n\nSelecione o formato de saída do Graphviz:";
+                std::cout << "\n1. Tela";
+                std::cout << "\n2. Imagem (PNG)";
+                std::cout << "\n3. Documento (PDF)";
+                std::cout << "\nopcao: ";
+                int opcao;
+                std::cin >> opcao;
+                switch(opcao){
+                    case 1:
+                        system("dot -Tx11 path.dot");
+                        break;
+                    case 2:
+                        system("dot -Tpng path.dot -o shotest_path.png");
+                        break;
+                    case 3:
+                        system("dot -Tpdf path.dot -o shotest_path.pdf");
+                        break;
+                    default:
+                        std::cout << "Opção inválida.\n";
+                    
+                }
                 break;
-                
             }
-            case 3: {
+
+            case 3:
                 std::cout << "Calculando o diâmetro do grafo...\n";
                 std::cout << "Diâmetro do grafo: " << g.diametro() << std::endl;
                 break;
-            }
 
-
-
+            case 4: 
+                g.top_indegree();
+                break;
+                
             case 0:
                 std::cout << "Saindo...\n";
                 break;
